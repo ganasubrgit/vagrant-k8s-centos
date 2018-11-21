@@ -12,3 +12,7 @@ if [ ! -f /usr/bin/docker ]; then
   systemctl enable docker
   systemctl restart docker
 fi
+
+# echo 'Delete the docker bridge'
+# ip link set docker0 down
+# ip link delete docker0

@@ -16,14 +16,14 @@ Vagrant.configure('2') do |config|
 
   config.vm.provider "virtualbox" do |vb|
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    # vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
     vb.memory = 1024
     vb.cpus = 1
   end
 
   # Run scripts for all VMs
   config.vm.provision :shell, path: 'scripts/files.sh'
-  config.vm.provision :shell, path: 'scripts/common.sh'
+  # config.vm.provision :shell, path: 'scripts/common.sh'
   # config.vm.provision :shell, path: 'scripts/kernel.sh'
   config.vm.provision :shell, path: 'scripts/docker.sh'
   config.vm.provision :shell, path: 'scripts/kubernetes.sh'
@@ -40,14 +40,16 @@ Vagrant.configure('2') do |config|
     minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
   end
 
-  # config.vm.define 'node02' do |minion|
-  #  minion.vm.hostname = 'node02'
-  #  minion.vm.network "private_network", ip: '192.168.121.112'
-  # end
-  #
+  config.vm.define 'node02' do |minion|
+   minion.vm.hostname = 'node02'
+   minion.vm.network "private_network", ip: '192.168.121.112'
+   minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
+  end
+
   # config.vm.define 'node03' do |minion|
   #  minion.vm.hostname = 'node03'
   #  minion.vm.network "private_network", ip: '192.168.121.113'
+  #  minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
   # end
 
 end
