@@ -8,9 +8,11 @@ Vagrant.configure('2') do |config|
 
   # Scripts
   config.vm.provision "file", source: "scripts/files.sh", destination: "scripts/files.sh"
+  config.vm.provision "file", source: "scripts/common.sh", destination: "scripts/common.sh"
   config.vm.provision "file", source: "scripts/docker.sh", destination: "scripts/docker.sh"
   config.vm.provision "file", source: "scripts/kubernetes.sh", destination: "scripts/kubernetes.sh"
   config.vm.provision "file", source: "scripts/kubernetes-master.sh", destination: "scripts/kubernetes-master.sh"
+  config.vm.provision "file", source: "scripts/kubernetes-minion.sh", destination: "scripts/kubernetes-minion.sh"
 
   config.vm.provider "virtualbox" do |v|
     v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
@@ -20,6 +22,7 @@ Vagrant.configure('2') do |config|
 
   # Update kernel vor all VMs
   config.vm.provision :shell, path: 'scripts/files.sh'
+  config.vm.provision :shell, path: 'scripts/common.sh'
   config.vm.provision :shell, path: 'scripts/kernel.sh'
   config.vm.provision :shell, path: 'scripts/docker.sh'
   config.vm.provision :shell, path: 'scripts/kubernetes.sh'
@@ -27,12 +30,13 @@ Vagrant.configure('2') do |config|
   config.vm.define 'master' do |master|
     master.vm.hostname = 'master'
     master.vm.network "private_network", ip: '192.168.121.110'
-    master.vm.provision "file", source: "scripts/kubernetes-master.sh", destination: "scripts/kubernetes-master.sh"
+    config.vm.provision :shell, path: 'scripts/kubernetes-master.sh'
   end
 
   config.vm.define 'node01' do |minion|
     minion.vm.hostname = 'node01'
     minion.vm.network "private_network", ip: '192.168.121.111'
+    config.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
   end
 
   # config.vm.define 'node02' do |minion|

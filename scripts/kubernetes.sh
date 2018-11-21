@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
 
-echo 'Install kubernetes'
+systemctl disable firewalld
+
+iptables -t nat -F
+iptables -F
+iptables -X
+
 swapoff -a
 setenforce 0
 sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
@@ -8,9 +13,11 @@ sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig
 modprobe br_netfilter
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 
-yum install -y kubelet kubeadm kubectl
+if [ ! -f /usr/bin/kubectl ]; then
+  echo 'Installing kubernetes'
+  yum install -y kubelet kubectl kubeadm
 
-export KUBECONFIG=/etc/kubernetes/admin.conf
-
-systemctl enable kubelet
-systemctl restart kubelet
+  systemctl daemon-reload
+  systemctl enable kubelet
+  systemctl restart kubelet
+fi
