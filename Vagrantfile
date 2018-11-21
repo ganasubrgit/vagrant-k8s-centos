@@ -14,16 +14,17 @@ Vagrant.configure('2') do |config|
   config.vm.provision "file", source: "scripts/kubernetes-master.sh", destination: "scripts/kubernetes-master.sh"
   config.vm.provision "file", source: "scripts/kubernetes-minion.sh", destination: "scripts/kubernetes-minion.sh"
 
-  config.vm.provider "virtualbox" do |v|
-    v.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
-    v.memory = 1024
-    v.cpus = 1
+  config.vm.provider "virtualbox" do |vb|
+    vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
+    # vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
+    vb.memory = 1024
+    vb.cpus = 1
   end
 
   # Update kernel vor all VMs
   config.vm.provision :shell, path: 'scripts/files.sh'
   config.vm.provision :shell, path: 'scripts/common.sh'
-  config.vm.provision :shell, path: 'scripts/kernel.sh'
+  # config.vm.provision :shell, path: 'scripts/kernel.sh'
   config.vm.provision :shell, path: 'scripts/docker.sh'
   config.vm.provision :shell, path: 'scripts/kubernetes.sh'
 
