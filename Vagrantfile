@@ -21,7 +21,7 @@ Vagrant.configure('2') do |config|
     vb.cpus = 1
   end
 
-  # Update kernel vor all VMs
+  # Run scripts for all VMs
   config.vm.provision :shell, path: 'scripts/files.sh'
   config.vm.provision :shell, path: 'scripts/common.sh'
   # config.vm.provision :shell, path: 'scripts/kernel.sh'
