@@ -30,13 +30,13 @@ Vagrant.configure('2') do |config|
   config.vm.define 'master' do |master|
     master.vm.hostname = 'master'
     master.vm.network "private_network", ip: '192.168.121.110'
-    config.vm.provision :shell, path: 'scripts/kubernetes-master.sh'
+    master.vm.provision :shell, path: 'scripts/kubernetes-master.sh'
   end
 
   config.vm.define 'node01' do |minion|
     minion.vm.hostname = 'node01'
     minion.vm.network "private_network", ip: '192.168.121.111'
-    config.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
+    minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
   end
 
   # config.vm.define 'node02' do |minion|
