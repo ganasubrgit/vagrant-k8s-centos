@@ -12,7 +12,7 @@ if ! kubeadm token list | grep abcdef.0123456789abcdef ; then
   cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
   chown $(id -u):$(id -g) $HOME/.kube/config
 
-  kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+  echo "Set cni networking"
+  kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
+  export KUBECONFIG=$HOME/.kube/config
 fi
-
-export KUBECONFIG=/etc/kubernetes/admin.conf

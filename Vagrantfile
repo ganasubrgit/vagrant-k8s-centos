@@ -5,6 +5,7 @@ Vagrant.configure('2') do |config|
   config.vm.provision "file", source: "config/k8s.conf", destination: "config/k8s.conf"
   config.vm.provision "file", source: "config/resolv.conf", destination: "config/resolv.conf"
   config.vm.provision "file", source: "config/kubernetes.repo", destination: "config/kubernetes.repo"
+  config.vm.provision "file", source: "config/kube-flannel.yaml", destination: "config/kube-flannel.yaml"
 
   # Scripts
   config.vm.provision "file", source: "scripts/files.sh", destination: "scripts/files.sh"
@@ -14,11 +15,14 @@ Vagrant.configure('2') do |config|
   config.vm.provision "file", source: "scripts/kubernetes-master.sh", destination: "scripts/kubernetes-master.sh"
   config.vm.provision "file", source: "scripts/kubernetes-minion.sh", destination: "scripts/kubernetes-minion.sh"
 
+  # Add host network manager
+  config.vm.network "private_network", type: "dhcp", ip: "192.168.121.1"
+
   config.vm.provider "virtualbox" do |vb|
+    vb.cpus = 2
+    vb.memory = 2024
     vb.customize ["modifyvm", :id, "--natdnshostresolver1", "on"]
     vb.customize ["modifyvm", :id, "--natdnsproxy1", "on"]
-    vb.memory = 1024
-    vb.cpus = 1
   end
 
   # Run scripts for all VMs
@@ -29,27 +33,35 @@ Vagrant.configure('2') do |config|
   config.vm.provision :shell, path: 'scripts/kubernetes.sh'
 
   config.vm.define 'master' do |master|
+    master.vm.cpus = 1
+    master.vm.memory = 1024
     master.vm.hostname = 'master'
     master.vm.network "private_network", ip: '192.168.121.110'
     master.vm.provision :shell, path: 'scripts/kubernetes-master.sh'
   end
 
   config.vm.define 'node01' do |minion|
+    minion.vm.cpus = 1
+    minion.vm.memory = 1024
     minion.vm.hostname = 'node01'
     minion.vm.network "private_network", ip: '192.168.121.111'
     minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
   end
 
   config.vm.define 'node02' do |minion|
-   minion.vm.hostname = 'node02'
-   minion.vm.network "private_network", ip: '192.168.121.112'
-   minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
+    minion.vm.cpus = 1
+    minion.vm.memory = 1024
+    minion.vm.hostname = 'node02'
+    minion.vm.network "private_network", ip: '192.168.121.112'
+    minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
   end
 
   # config.vm.define 'node03' do |minion|
-  #  minion.vm.hostname = 'node03'
-  #  minion.vm.network "private_network", ip: '192.168.121.113'
-  #  minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
+  #   minion.vm.cpus = 1
+  #   minion.vm.memory = 1024
+  #   minion.vm.hostname = 'node03'
+  #   minion.vm.network "private_network", ip: '192.168.121.113'
+  #   minion.vm.provision :shell, path: 'scripts/kubernetes-minion.sh'
   # end
 
 end

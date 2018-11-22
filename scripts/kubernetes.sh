@@ -22,6 +22,7 @@ modprobe br_netfilter
 swapoff -a
 setenforce 0
 sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+echo '1' > /proc/sys/net/ipv4/ip_forward
 echo '1' > /proc/sys/net/bridge/bridge-nf-call-iptables
 
 if [ ! -f /usr/bin/kubectl ]; then
