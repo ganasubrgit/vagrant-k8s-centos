@@ -31,6 +31,9 @@ if [ ! -f /usr/bin/kubectl ]; then
   echo 'Installing kubernetes'
   yum install -y kubelet kubectl kubeadm
 
+  echo "Enable kubectl autocomplete"
+  echo "source <(kubectl completion bash)" >> ~/.bashrc
+
   systemctl daemon-reload
   systemctl enable kubelet
   systemctl restart kubelet
