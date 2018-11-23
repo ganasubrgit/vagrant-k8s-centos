@@ -20,6 +20,8 @@ modprobe ip_vs_sh
 modprobe br_netfilter
 
 swapoff -a
+sed -e '/swap/ s/^#*/#/' -i /etc/fstab
+
 setenforce 0
 sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
 echo '1' > /proc/sys/net/ipv4/ip_forward
