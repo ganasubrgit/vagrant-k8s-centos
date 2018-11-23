@@ -31,8 +31,15 @@ if [ ! -f /usr/bin/kubectl ]; then
   echo 'Installing kubernetes'
   yum install -y kubelet kubectl kubeadm
 
-  echo "Enable kubectl autocomplete"
+  echo "Enable kubectl autocomplete for root"
   echo "source <(kubectl completion bash)" >> ~/.bashrc
+  echo "source <(kubeadm completion bash)" >> ~/.bashrc
+  source ~/.bashrc
+
+  echo "Enable kubectl autocomplete for vagrant"
+  echo "source <(kubectl completion bash)" >> /home/vagrant/.bashrc
+  echo "source <(kubeadm completion bash)" >> /home/vagrant/.bashrc
+  source /home/vagrant/.bashrc
 
   systemctl daemon-reload
   systemctl enable kubelet
