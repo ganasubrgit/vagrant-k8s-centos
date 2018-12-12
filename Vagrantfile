@@ -1,4 +1,9 @@
 Vagrant.configure('2') do |config|
+
+  # Enabling  X-Forwarding
+  config.ssh.forward_x11 = true
+  config.ssh.forward_agent = true
+
   # Config files
   config.vm.box = 'centos/7'
   config.vm.provision "file", source: "config/hosts", destination: "config/hosts"

@@ -13,6 +13,7 @@ kubeadm init --token=abcdef.0123456789abcdef --apiserver-advertise-address=$(hos
 echo "Copy /etc/kubernetes/admin.conf"
 mkdir -p /home/vagrant/.kube
 yes | cp -i /etc/kubernetes/admin.conf /home/vagrant/.kube/config
+chown vagrant:vagrant /home/vagrant/.kube/
 chown vagrant:vagrant /home/vagrant/.kube/config
 
 export KUBECONFIG=/home/vagrant/.kube/config
