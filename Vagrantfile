@@ -29,7 +29,7 @@ Vagrant.configure('2') do |config|
 
   # Run scripts for all VMs
   config.vm.provision :shell, path: 'scripts/files.sh'
-  # config.vm.provision :shell, path: 'scripts/common.sh'
+  config.vm.provision :shell, path: 'scripts/common.sh'
   # config.vm.provision :shell, path: 'scripts/kernel.sh'
   config.vm.provision :shell, path: 'scripts/docker.sh'
   config.vm.provision :shell, path: 'scripts/kubernetes.sh'

@@ -18,5 +18,5 @@ chown vagrant:vagrant /home/vagrant/.kube/config
 
 export KUBECONFIG=/home/vagrant/.kube/config
 
-echo "Set cni networking"
+echo "Set Container Network Interface (CNI) "
 kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
